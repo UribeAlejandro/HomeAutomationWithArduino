@@ -5,11 +5,12 @@
 #include <LiquidCrystal_I2C.h>
 
 #define VOLTAGE 5
-#define DHT11_PIN 2
+#define DHT11_PIN A1
+#define LIGHT_PIN A0
 
-#define MQ2_PIN A0
-#define MQ7_PIN A1
-#define LIGHT_PIN A2
+#define MQ2_PIN A3
+#define MQ7_PIN A2
+
 
 float lpg;
 float co;
@@ -127,6 +128,13 @@ void print_temperature_humidity()
     lcd.setCursor(0, 1);
     lcd.print(dewPoint(temperature, humidity));
     delay(2600);
+
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Real Feel (C):");
+    lcd.setCursor(0, 1);
+    lcd.print(realFeel(temperature, humidity));
+    delay(2600);
   }
   else
   {
@@ -150,4 +158,21 @@ double dewPoint(double celsius, double humidity)
   // (2) DEWPOINT = F(Vapor Pressure)
   double T = log(VP / 0.61078); // temp var
   return (241.88 * T) / (17.558 - T);
+}
+
+double realFeel(double celsius, double humidity){
+  double c1 = -8.78469475556;
+  double c2 = 1.61139411;
+  double c3 = 2.33854883889;
+  double c4 = -0.14611605;
+  double c5 = -0.012308094;
+  double c6 = -0.0164248277778;
+  double c7 = 2.211732e-3;
+  double c8 = 7.2546e-4;
+  double c9 = -3.582e-6;
+
+  double HI = c1 + c2*celsius + c3*humidity + c4*celsius*humidity + c5*pow(celsius, 2) + c6*pow(humidity,2) + c7*pow(celsius, 2)*humidity + c8*celsius*pow(humidity,2) + c9*pow(celsius,2)*pow(humidity,2);
+
+  return HI;
+
 }
