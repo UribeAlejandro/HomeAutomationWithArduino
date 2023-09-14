@@ -1,3 +1,4 @@
+#include <SD.h>
 #include <MQ2.h>
 #include <MQ7.h>
 #include <Wire.h>
@@ -5,11 +6,12 @@
 #include <LiquidCrystal_I2C.h>
 
 #define VOLTAGE 5
-#define DHT11_PIN A1
-#define LIGHT_PIN A0
 
-#define MQ2_PIN A3
-#define MQ7_PIN A2
+#define MQ2_PIN A0
+#define MQ7_PIN A1
+#define LIGHT_PIN A2
+#define MIC_PIN A4
+#define DHT11_PIN A3
 
 
 float lpg;
@@ -36,7 +38,6 @@ void setup()
 
 void loop()
 {
-
   print_temperature_humidity();
   print_gases();
   print_co();
@@ -175,4 +176,13 @@ double realFeel(double celsius, double humidity){
 
   return HI;
 
+}
+
+void print_quien_dio_la_orden() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("URIBE");
+  lcd.setCursor(0, 1);
+  lcd.print("DIO LA ORDEN");
+  delay(2600);
 }
